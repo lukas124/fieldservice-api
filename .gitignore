@@ -1,0 +1,37 @@
+# build
+bin/
+obj/
+artifacts/
+publish/
+*.user
+.vs/
+.idea/
+.DS_Store
+TestResults/
+
+# dane runtime (klucz podpisu JWT)
+# (nie 'data/' - na macOS FS jest case-insensitive i zjadłoby katalog kodu Data/)
+**/data/*.json
+**/data/*.txt
+**/data/*.tmp
+**/data/photos/
+App_Data/
+
+# poświadczenia Google / Apple / SSH — NIGDY w repo
+secrets/
+*firebase-adminsdk*.json
+firebase-sa*.json
+service-account*.json
+serviceAccount*.json
+credentials*.json
+*.p8
+*.p12
+*.pem
+*.key
+id_ed25519*
+id_rsa*
+.env
+.env.*
+*.env
+appsettings.*.local.json
+appsettings.Production.json

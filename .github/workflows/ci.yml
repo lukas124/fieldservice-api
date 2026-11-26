@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    # testy integracyjne działają na prawdziwym PostgreSQL (każda klasa testów tworzy i usuwa własną bazę)
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: fieldservice
+          POSTGRES_PASSWORD: fieldservice
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U fieldservice"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      FIELDSERVICE_TEST_DB: Host=localhost;Username=fieldservice;Password=fieldservice
+    steps:
+      - uses: actions/checkout@v5
+
+      # net9.0: runtime dostępny na docelowym hoście
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore
+        run: dotnet restore FieldService.Api.slnx
+
+      - name: Build
+        run: dotnet build FieldService.Api.slnx -c Release --no-restore -warnaserror
+
+      - name: Test
+        run: dotnet test FieldService.Api.slnx -c Release --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: tests/**/TestResults/*.trx

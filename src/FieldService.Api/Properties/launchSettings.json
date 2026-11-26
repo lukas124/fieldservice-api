@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "localhost": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__FieldService": "Host=localhost;Database=fieldservice;Username=fieldservice;Password=fieldservice"
+      }
+    },
+    "siec-sali": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Hosting__ListenOnAllInterfaces": "true",
+        "ConnectionStrings__FieldService": "Host=localhost;Database=fieldservice;Username=fieldservice;Password=fieldservice"
+      }
+    },
+    "telemetria": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4318",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+        "ConnectionStrings__FieldService": "Host=localhost;Database=fieldservice;Username=fieldservice;Password=fieldservice"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!-- net9.0: docelowy host (FreeBSD) ma tylko runtime 8/9 -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootNamespace>FieldService.Api</RootNamespace>
+    <AssemblyName>FieldService.Api</AssemblyName>
+    <Version>1.0.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- brak komentarza XML w publicznym typie lub parametrze (np. CancellationToken) to nie błąd -->
+    <NoWarn>$(NoWarn);1591;1573</NoWarn>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <!-- artefakt przenośny (framework-dependent, bez RID): uruchamiany przez `dotnet FieldService.Api.dll` -->
+    <UseAppHost>false</UseAppHost>
+    <!-- mały proces na współdzielonym hoście -->
+    <ServerGarbageCollector>false</ServerGarbageCollector>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.20" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.5" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.20.1" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.20.1" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.20.1" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.20.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- lokalne dane nie trafiają do publikacji -->
+    <Content Remove="data/**" />
+    <None Remove="data/**" />
+    <!-- ustawienia deweloperskie (m.in. dev-admin-key) nie trafiają na serwer -->
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="FieldService.Api.Tests" />
+  </ItemGroup>
+
+</Project>
